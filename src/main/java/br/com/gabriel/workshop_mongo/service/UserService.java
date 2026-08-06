@@ -3,9 +3,11 @@ package br.com.gabriel.workshop_mongo.service;
 import br.com.gabriel.workshop_mongo.domain.User;
 import br.com.gabriel.workshop_mongo.dto.UserDTO;
 import br.com.gabriel.workshop_mongo.repository.UserRepository;
+import br.com.gabriel.workshop_mongo.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -21,6 +23,7 @@ public class UserService {
     }
 
     public User findById(String id) {
-        return repository.findById(id).orElse(null);
+        Optional<User> obj = repository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
     }
 }
