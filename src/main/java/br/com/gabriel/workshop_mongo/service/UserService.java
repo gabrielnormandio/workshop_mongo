@@ -26,4 +26,32 @@ public class UserService {
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
     }
+
+    public User insert(User user) {
+        repository.insert(user);
+        return user;
+    }
+
+    public User fromDTO(UserDTO userDto) {
+        return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
+    }
+
+    public void delete(String id) {
+        Optional<User> obj = repository.findById(id);
+        repository.deleteById(obj.get().getId());
+    }
+
+    public User update(String id, UserDTO userDTO) {
+        Optional<User> obj = repository.findById(id);
+        User user = obj.get();
+        updateData(user, userDTO);
+        return repository.save(user);
+    }
+
+    public User updateData(User user, UserDTO userDto) {
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        return user;
+    }
 }
+
