@@ -1,20 +1,27 @@
 package br.com.gabriel.workshop_mongo.config;
 
+import br.com.gabriel.workshop_mongo.domain.Post;
 import br.com.gabriel.workshop_mongo.domain.User;
+import br.com.gabriel.workshop_mongo.repository.PostRepository;
 import br.com.gabriel.workshop_mongo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @Configuration
 public class Instantiation implements CommandLineRunner {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private PostRepository postRepository;
 
-    public Instantiation(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -26,6 +33,12 @@ public class Instantiation implements CommandLineRunner {
         userRepository.deleteAll();
 
         userRepository.saveAll(Arrays.asList(maria, alex, bob));
+
+        Post post1 = new Post(null, sdf.parse("21/03/2026"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", maria);
+        Post post2 = new Post(null, sdf.parse("23/03/2026"), "Bom dia", "Acordei feliz hoje!", maria);
+
+        postRepository.deleteAll();
+        postRepository.saveAll(Arrays.asList(post1, post2));
 
     }
 }
