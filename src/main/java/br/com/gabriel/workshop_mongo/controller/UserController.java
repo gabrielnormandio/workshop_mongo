@@ -1,6 +1,7 @@
 package br.com.gabriel.workshop_mongo.controller;
 
 
+import br.com.gabriel.workshop_mongo.domain.Post;
 import br.com.gabriel.workshop_mongo.domain.User;
 import br.com.gabriel.workshop_mongo.dto.UserDTO;
 import br.com.gabriel.workshop_mongo.service.UserService;
@@ -53,5 +54,11 @@ public class UserController {
     public ResponseEntity<UserDTO> update(@PathVariable String id, @RequestBody UserDTO userDto) {
         service.update(id, userDto);
         return ResponseEntity.ok().body(new UserDTO(service.findById(id)));
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPost(@PathVariable String id) {
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
